@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Anuncio por Voz</title>
+  <style>
+    body {
+      background-color: #f2f2f2;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 30px;
+    }
+    h1 {
+      color: #333;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .panel-link {
+      margin-top: 40px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔊 Esperando anuncios...</h1>
+
+  <audio id="player">
+    <source id="source" src="" type="audio/mpeg">
+    Tu navegador no soporta audio.
+  </audio>
+
+  <button onclick="habilitarReproduccion()" id="activarBtn">▶️ Activar audio</button>
+
+  <a href="{{ url_for('login') }}" class="panel-link">
+    <button>🔐 Ir al panel de administración</button>
+  </a>
+
+  <script>
+    let ultimaReproduccion = "";
+    let audioHabilitado = false;
+
+    function habilitarReproduccion() {
+      audioHabilitado = true;
+      document.getElementById("activarBtn").style.display = "none";
+    }
+
+    async function checkNuevoAnuncio() {
+      if (!audioHabilitado) return;
+
+      try {
+        const response = await fetch("/static/ultimo.txt");
+        const ruta = await response.text();
+        const archivo = ruta.trim();
+
+        if (archivo !== "" && archivo !== ultimaReproduccion) {
+          const audio = document.getElementById("player");
+          const source = document.getElementById("source");
+          source.src = "/" + archivo + "?t=" + new Date().getTime();
+          audio.load();
+          audio.play();
+          ultimaReproduccion = archivo;
+
+          // Avisar al servidor que terminó
+          audio.addEventListener("ended", () => {
+            fetch("/reproducido", { method: "POST" });
+          });
+        }
+      } catch (error) {
+        console.error("Error al verificar anuncio:", error);
+      }
+    }
+
+    setInterval(checkNuevoAnuncio, 1000);
+  </script>
+</body>
+</html>
+

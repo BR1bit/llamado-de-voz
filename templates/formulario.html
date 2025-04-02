@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ accion }} contacto</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      padding: 30px;
+    }
+    h1 {
+      color: #333;
+    }
+    form {
+      max-width: 400px;
+      margin: auto;
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .volver {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <h1>{{ accion }} contacto</h1>
+  <form method="POST">
+    <label for="telefono">Teléfono:</label>
+    <input type="text" name="telefono" id="telefono" value="{{ contacto.telefono if contacto else '' }}" required>
+
+    <label for="nombre">Nombre del niño/a:</label>
+    <input type="text" name="nombre" id="nombre" value="{{ contacto.nombre if contacto else '' }}" required>
+
+    <label for="mensaje">Mensaje personalizado (opcional):</label>
+    <input type="text" name="mensaje" id="mensaje" value="{{ contacto.mensaje if contacto else '' }}">
+
+    <button type="submit">{{ accion }}</button>
+  </form>
+
+  <a href="{{ url_for('contactos') }}" class="volver">⬅️ Volver</a>
+</body>
+</html>
+
