@@ -70,7 +70,7 @@ El proyecto se encuentra desplegado en:
 
 ## 🙌 Autor
 
-Bruno — [@BR1bit](https://github.com/BR1bit)
+Bruno — [@BR1bit] brodriguez135@gmail.com
 
 ---
 
